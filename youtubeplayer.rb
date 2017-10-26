@@ -37,7 +37,7 @@ class Track
 end
 
 loop do
-  puts "Paste an audio file... ('x' to quit)"
+  puts "Paste a song link... ('x' to quit)"
   track = gets.chomp
   if (track == "x")
     puts "Goodbye!"
