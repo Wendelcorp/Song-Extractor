@@ -5,6 +5,8 @@ require 'youtube-dl.rb'
 require 'streamio-ffmpeg'
 require 'tty-spinner'
 require 'tty-cursor'
+require 'colorize'
+require 'colorized_string'
 
 class Track
 
@@ -13,7 +15,7 @@ class Track
     @links = []
     @song_choice = ""
     @song_choice_name = ""
-    @spinner = TTY::Spinner.new(":spinner Downloading ...", format: :arc)
+    @spinner = TTY::Spinner.new(":spinner Downloading ...".colorize(:light_magenta), format: :arc)
   end
 
   def video_details
@@ -29,7 +31,7 @@ class Track
   end
 
   def download_video
-    puts @song_choice
+    # puts @song_choice
 
     options = {
       extract_audio: "true",
@@ -41,19 +43,19 @@ class Track
     YoutubeDL.download @song_choice, options
     File.rename "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Exports/#{@song_choice_name}.mp3", "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Automatically\ Add\ to\ iTunes.localized/#{@song_choice_name}.mp3"
 
-    @spinner.stop("Audio Extracted")
-    puts "Song imported to iTunes"
+    @spinner.stop("Audio Extracted".colorize(:light_cyan))
+    puts "Song imported to iTunes".colorize(:light_cyan)
     puts ""
   end
 
   def print_results
     video_details
     puts ""
-    puts "Enter choice number..."
-    puts "('n' for new search | 'x' to quit)"
+    puts "Enter choice number...".colorize(:light_cyan)
+    puts "('n' for new search | 'x' to quit)".colorize(:light_cyan)
     puts ""
     @links.each_with_index do |k, i|
-      puts " #{i + 1}: " + k.first[0]
+      puts " [#{i + 1}] ".colorize(:light_cyan) + "#{k.first[0]}".colorize(:light_magenta)
     end
     puts ""
     puts ""
@@ -69,7 +71,8 @@ end
 def new_search
   loop do
     puts ""
-    puts "Search for a song... ('x' to quit)"
+    puts "Search for a song... ('x' to quit)".colorize(:light_cyan)
+    puts ""
     search_phrase = gets.chomp
     if (search_phrase == "x")
       puts "Goodbye!"
