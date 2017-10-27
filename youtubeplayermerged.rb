@@ -3,6 +3,8 @@ require 'nokogiri'
 require 'open-uri'
 require 'youtube-dl.rb'
 require 'streamio-ffmpeg'
+require 'tty-spinner'
+require 'tty-cursor'
 
 class Track
 
@@ -11,6 +13,7 @@ class Track
     @links = []
     @song_choice = ""
     @song_choice_name = ""
+    @spinner = TTY::Spinner.new(":spinner Loading ...", format: :arc)
   end
 
   def video_details
@@ -30,11 +33,12 @@ class Track
     options = {
       extract_audio: "true",
       audio_format: "mp3",
-      output: "/Users/brycewendelaar/Desktop/_Exports/#{@song_choice_name}" + ".%(ext)s"
+      output: "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Automatically\ Add\ to\ iTunes.localized/#{@song_choice_name}" + ".%(ext)s"
     }
-    puts "Downloading..."
+    @spinner.auto_spin
     YoutubeDL.download @song_choice, options
-    puts "Audio Extracted"
+    @spinner.stop("Audio Extracted")
+    puts ""
   end
 
   def print_results
