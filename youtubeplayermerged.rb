@@ -44,7 +44,8 @@ class Track
   def print_results
     video_details
     puts ""
-    puts "Enter choice number"
+    puts "Enter choice number..."
+    puts "('n' for new search | 'x' to quit)"
     puts ""
     @links.each_with_index do |k, i|
       puts " #{i + 1}: " + k.first[0]
@@ -60,19 +61,29 @@ class Track
 
 end
 
-loop do
-  puts "Search for a song... ('x' to quit)"
-  search_phrase = gets.chomp
-  if (search_phrase == "x")
-    puts "Goodbye!"
-    break
-  else
-    search_phrase.gsub!(/ /, "+")
-    search_prefix = "https://www.youtube.com/results?search_query="
-    new_track = Track.new(search_prefix + search_phrase)
-    new_track.print_results
-    selected_video = gets.chomp.to_i - 1
-    new_track.link_constructor(selected_video)
-    new_track.download_video
+def new_search
+  loop do
+    puts "Search for a song... ('x' to quit)"
+    search_phrase = gets.chomp
+    if (search_phrase == "x")
+      puts "Goodbye!"
+      break
+    else
+      search_phrase.gsub!(/ /, "+")
+      search_prefix = "https://www.youtube.com/results?search_query="
+      new_track = Track.new(search_prefix + search_phrase)
+      new_track.print_results
+      selected_video = gets.chomp
+      if (selected_video == "n")
+        new_search
+      elsif (selected_video == "x")
+        break
+      else
+        new_track.link_constructor(selected_video.to_i - 1)
+        new_track.download_video
+      end
+    end
   end
 end
+
+new_search
