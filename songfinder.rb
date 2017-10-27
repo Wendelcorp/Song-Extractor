@@ -30,13 +30,17 @@ class Track
 
   def download_video
     puts @song_choice
+
     options = {
       extract_audio: "true",
       audio_format: "mp3",
-      output: "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Automatically\ Add\ to\ iTunes.localized/%(title)s" + ".%(ext)s"
+      no_part: "true",
+      output: "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Exports/%(title)s" + ".%(ext)s"
     }
     @spinner.auto_spin
     YoutubeDL.download @song_choice, options
+    File.rename "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Exports/#{@song_choice_name}.mp3", "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Automatically\ Add\ to\ iTunes.localized/#{@song_choice_name}.mp3"
+
     @spinner.stop("Audio Extracted")
     puts "Song imported to iTunes"
     puts ""
