@@ -13,7 +13,7 @@ class Track
     @links = []
     @song_choice = ""
     @song_choice_name = ""
-    @spinner = TTY::Spinner.new(":spinner Loading ...", format: :arc)
+    @spinner = TTY::Spinner.new(":spinner Downloading ...", format: :arc)
   end
 
   def video_details
@@ -33,11 +33,12 @@ class Track
     options = {
       extract_audio: "true",
       audio_format: "mp3",
-      output: "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Automatically\ Add\ to\ iTunes.localized/#{@song_choice_name}" + ".%(ext)s"
+      output: "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Automatically\ Add\ to\ iTunes.localized/%(title)s" + ".%(ext)s"
     }
     @spinner.auto_spin
     YoutubeDL.download @song_choice, options
     @spinner.stop("Audio Extracted")
+    puts "Song imported to iTunes"
     puts ""
   end
 
@@ -63,10 +64,12 @@ end
 
 def new_search
   loop do
+    puts ""
     puts "Search for a song... ('x' to quit)"
     search_phrase = gets.chomp
     if (search_phrase == "x")
       puts "Goodbye!"
+      puts ""
       break
     else
       search_phrase.gsub!(/ /, "+")
