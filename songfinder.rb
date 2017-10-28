@@ -37,7 +37,7 @@ class Track
       extract_audio: "true",
       audio_format: "mp3",
       no_part: "true",
-      output: "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Exports/%(title)s" + ".%(ext)s"
+      output: "/Users/brycewendelaar/Music/iTunes/iTunes\ Media/Exports/#{@song_choice_name}" + ".%(ext)s"
     }
     @spinner.auto_spin
     YoutubeDL.download @song_choice, options
